@@ -1,16 +1,15 @@
 from watchdog.observers import Observer
 from watchdog.events import *
-import time
 import sys
 import os
 import datetime
 import django
+import logging
 
-# sys.path.append('../shoot_shake')
-# os.chdir('../shoot_shake')
-sys.path.append('./shoot_shake')
-sys.path.append('../shoot_shake')
-os.chdir('./shoot_shake')
+sys.path.append('D:/workSpace/PythonWorkspace/shoot_shake/shoot_shake')
+sys.path.append('D:/workSpace/PythonWorkspace/shoot_shake')
+os.chdir('D:/workSpace/PythonWorkspace/shoot_shake')
+logging.basicConfig(filename='log.txt', filemode="w", level=logging.INFO)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "shoot_shake.settings")
 django.setup()
 from shootweb.models import *
@@ -26,257 +25,26 @@ def string_to_time(string):
     return datetime.datetime.strptime(string, "%H-%M-%S")
 
 
+def get_normal_str(s):
+    s = s.strip()
+    if len(s) < 2 and int(s) < 10:
+        s = "0" + s
+    return s
+
+
+def find_n_sub_str(src, sub, pos, start):
+    index = src.find(sub, start)
+    if index != -1 and pos > 0:
+        return find_n_sub_str(src, sub, pos - 1, index + 1)
+    return index
+
+
 class HeartEventHandler(FileSystemEventHandler):
     def __init__(self):
         FileSystemEventHandler.__init__(self)
-
-    def on_moved(self, event):
-        if event.is_directory:
-            pass
-            # print("directory moved from {0} to {1}".format(event.src_path, event.dest_path))
-        else:
-            # print("file moved from {0} to {1}".format(event.src_path, event.dest_path))
-            pass
-
-    def on_created(self, event):
-        if event.is_directory:
-            # print("directory created:{0}".format(event.src_path))
-            pass
-        else:
-            print("file created:{0}".format(event.src_path))
-            time.sleep(1)
-            with open(event.src_path, 'r', encoding='gbk') as file:
-                print("heart_file")
-                heart_file = event.src_path
-                i = heart_file.find("Heart")
-                heart_date = heart_file[i + 5:i + 15]
-                heart_time = heart_file[i + 16:i + 25]
-                heart_time = heart_time.replace("-", ":")
-                print(heart_date)
-                print(heart_time)
-                data = file.readlines()  # 读取全部内容 ，并以列表方式返回
-                records = {}
-                for line in data:
-                    line = line.strip()
-                    line = line.split("：")
-                    if records.get(line[0]) is None:
-                        records[line[0]] = []
-                    records[line[0]].append(line[1])
-                # print(records)
-                context = ""
-                record_heart = record_heart_time(record_date=heart_date, record_time=heart_time, start_time=heart_time,
-                                                 end_time="")
-                record_heart.save()
-                print(record_heart.id)
-                end_time = ""
-                for key, value in records.items():
-                    t1 = string_to_time(key)
-                    # new_time = time_to_string(t1 - datetime.timedelta(minutes=1, seconds=27))
-                    context += time_to_string(t1) + " : "
-                    rates = ""
-                    total = 0
-                    for rate in value:
-                        context += rate + " "
-                        rates += rate + " "
-                        total += int(rate)
-                    t = key.replace("-", ":")
-                    data = heart_data(record_id=record_heart.id, heart_time=t, heart_date=heart_date,
-                                      heart_rate=rates, average_rate=int(total / len(value)))
-                    data.save()
-                    end_time = t
-                    context += "\n"
-                record_heart.end_time = end_time
-                record_heart.save()
-                print(context)
-
-    def on_deleted(self, event):
-        if event.is_directory:
-            # print("directory deleted:{0}".format(event.src_path))
-            pass
-        else:
-            # print("file deleted:{0}".format(event.src_path))
-            pass
-
-    def on_modified(self, event):
-        if event.is_directory:
-            # print("directory modified:{0}".format(event.src_path))
-            pass
-        else:
-            # print("file modified:{0}".format(event.src_path))
-            pass
-
-
-class ShakeXEventHandler(FileSystemEventHandler):
-    def __init__(self):
-        FileSystemEventHandler.__init__(self)
-
-    def on_moved(self, event):
-        if event.is_directory:
-            # print("directory moved from {0} to {1}".format(event.src_path, event.dest_path))
-            pass
-        else:
-            # print("file moved from {0} to {1}".format(event.src_path, event.dest_path))
-            pass
-
-    def on_created(self, event):
-        if event.is_directory:
-            # print("directory created:{0}".format(event.src_path))
-            pass
-        else:
-            print("file created:{0}".format(event.src_path))
-            time.sleep(1)
-            with open(event.src_path, 'r', encoding='gbk') as file:
-                print("shake_x")
-                shake_file = event.src_path
-                i = shake_file.find("BesideX")
-                shake_date = shake_file[i + 7:i + 17]
-                shake_time = shake_file[i + 18:i + 27]
-                shake_time = shake_time.replace("-", ":")
-                print(shake_date)
-                print(shake_time)
-                data = file.readlines()  # 读取全部内容 ，并以列表方式返回
-                records = {}
-                for line in data:
-                    line = line.strip()
-                    line = line.split("：")
-                    if records.get(line[0]) is None:
-                        records[line[0]] = []
-                    records[line[0]].append(line[1])
-                # print(records)
-                context = ""
-                context_all = ""
-                end_time = ""
-                for key, value in records.items():
-                    # t1 = string_to_time(key)
-                    # new_time = time_to_string(t1 - datetime.timedelta(minutes=1, seconds=27))
-                    context_all += key + ":"
-                    end_time = key
-                    for shake in value:
-                        shake = shake.split('.')
-                        data = float(shake[0]) / 1000
-                        data = '%.03f' % data
-                        context_all += str(data) + ","
-                        context += str(data) + ","
-                    context_all += "\n"
-                record_shakes = record_shake_time.objects.filter(record_date=shake_date).filter(record_time=shake_time)
-                if len(record_shakes) == 0:
-                    end_time = end_time.replace("-", ":")
-                    record_shake = record_shake_time(record_date=shake_date, record_time=shake_time,
-                                                     start_time=shake_time, end_time=end_time, shake_x_data=context,
-                                                     shake_x_detail_data=context_all)
-                    record_shake.save()
-                else:
-                    record_shake = record_shakes[0]
-                    record_shake.shake_x_data = context
-                    record_shake.shake_x_detail_data = context_all
-                    record_shake.save()
-                print(context_all)
-
-    def on_deleted(self, event):
-        if event.is_directory:
-            # print("directory deleted:{0}".format(event.src_path))
-            pass
-        else:
-            # print("file deleted:{0}".format(event.src_path))
-            pass
-
-    def on_modified(self, event):
-        if event.is_directory:
-            # print("directory modified:{0}".format(event.src_path))
-            pass
-        else:
-            # print("file modified:{0}".format(event.src_path))
-            pass
-
-
-class ShakeYEventHandler(FileSystemEventHandler):
-    def __init__(self):
-        FileSystemEventHandler.__init__(self)
-
-    def on_moved(self, event):
-        if event.is_directory:
-            # print("directory moved from {0} to {1}".format(event.src_path, event.dest_path))
-            pass
-        else:
-            # print("file moved from {0} to {1}".format(event.src_path, event.dest_path))
-            pass
-
-    def on_created(self, event):
-        if event.is_directory:
-            # print("directory created:{0}".format(event.src_path))
-            pass
-        else:
-            print("file created:{0}".format(event.src_path))
-            time.sleep(1)
-            with open(event.src_path, 'r', encoding='gbk') as file:
-                print("shake_y")
-                shake_file = event.src_path
-                i = shake_file.find("BesideY")
-                shake_date = shake_file[i + 7:i + 17]
-                shake_time = shake_file[i + 18:i + 27]
-                shake_time = shake_time.replace("-", ":")
-                print(shake_date)
-                print(shake_time)
-                data = file.readlines()  # 读取全部内容 ，并以列表方式返回
-                records = {}
-                for line in data:
-                    line = line.strip()
-                    line = line.split("：")
-                    if records.get(line[0]) is None:
-                        records[line[0]] = []
-                    records[line[0]].append(line[1])
-                # print(records)
-                context = ""
-                context_all = ""
-                end_time = ""
-                for key, value in records.items():
-                    # t1 = string_to_time(key)
-                    # new_time = time_to_string(t1 - datetime.timedelta(minutes=1, seconds=27))
-                    context_all += key + ":"
-                    end_time = key
-                    for shake in value:
-                        shake = shake.split('.')
-                        data = float(shake[0]) / 1000
-                        data = str('%.03f' % data)
-                        context_all += data + ","
-                        context += data + ","
-                    context_all += "\n"
-                record_shakes = record_shake_time.objects.filter(record_date=shake_date).filter(record_time=shake_time)
-                if len(record_shakes) == 0:
-                    end_time = end_time.replace("-", ":")
-                    record_shake = record_shake_time(record_date=shake_date, record_time=shake_time,
-                                                     start_time=shake_time, end_time=end_time, shake_y_data=context,
-                                                     shake_y_detail_data=context_all)
-                    record_shake.save()
-                else:
-                    record_shake = record_shakes[0]
-                    record_shake.shake_y_data = context
-                    record_shake.shake_y_detail_data = context_all
-                    record_shake.save()
-                print(context_all)
-
-    def on_deleted(self, event):
-        if event.is_directory:
-            # print("directory deleted:{0}".format(event.src_path))
-            pass
-        else:
-            # print("file deleted:{0}".format(event.src_path))
-            pass
-
-    def on_modified(self, event):
-        if event.is_directory:
-            # print("directory modified:{0}".format(event.src_path))
-            pass
-        else:
-            # print("file modified:{0}".format(event.src_path))
-            pass
-
-
-class GradeEventHandler(FileSystemEventHandler):
-    def __init__(self):
-        FileSystemEventHandler.__init__(self)
         self.heart_file = None
-        self.shake_file = None
+        self.record_heart = None
+        self.heart_data = None
 
     def on_moved(self, event):
         if event.is_directory:
@@ -289,13 +57,39 @@ class GradeEventHandler(FileSystemEventHandler):
             print("directory created:{0}".format(event.src_path))
         else:
             print("file created:{0}".format(event.src_path))
+            logging.info("file created:" + event.src_path)
             self.heart_file = open(event.src_path, "r")
+            file_path = event.src_path.split("\\")[-1]
+            heart_date = file_path[2:12]
+            heart_time = file_path[13:21].replace("-", ":")
+            self.record_heart = record_heart_time(record_date=heart_date, record_time=heart_time, start_time=heart_time,
+                                                  end_time="")
+            self.record_heart.save()
+            self.heart_data = {}
 
     def on_deleted(self, event):
         if event.is_directory:
             print("directory deleted:{0}".format(event.src_path))
         else:
             print("file deleted:{0}".format(event.src_path))
+
+    def save_to_mysql(self):
+        print(self.heart_data)
+        end_time = ""
+        for key, value in self.heart_data.items():
+            total = 0
+            rates = ""
+            for rate in value:
+                rates += rate + " "
+                total += int(rate)
+            data = heart_data(record_id=self.record_heart.id, heart_time=key, heart_date=self.record_heart.record_date,
+                              heart_rate=rates, average_rate=int(total / len(value)))
+            data.save()
+            end_time = key
+        self.record_heart.end_time = end_time
+        self.record_heart.save()
+        self.record_heart = None
+        self.heart_data = None
 
     def on_modified(self, event):
         if event.is_directory:
@@ -312,13 +106,33 @@ class GradeEventHandler(FileSystemEventHandler):
                         break
                     line = line.strip()
                     print(line)
+                    logging.info(line)
+                    if "END" in line:
+                        self.save_to_mysql()
+                        break
+                    d1 = line.split("-")
+                    d2 = d1[3]
+                    d3 = d2.split(":")
+                    h_time = get_normal_str(d3[0]) + ":" + get_normal_str(d3[1]) + ":" + get_normal_str(d3[2])
+                    # print(h_time)
+                    d4 = d3[3]
+                    d5 = d4.split("\t")
+                    # print(d5[-1])
+                    if self.heart_data.get(h_time) is None:
+                        self.heart_data[h_time] = []
+                    self.heart_data[h_time].append(d5[-1])
 
 
 class ShakeEventHandler(FileSystemEventHandler):
     def __init__(self):
         FileSystemEventHandler.__init__(self)
-        self.heart_file = None
         self.shake_file = None
+        self.record_shake = None
+        self.x_data = None
+        self.x_detail_data = None
+        self.y_data = None
+        self.y_detail_data = None
+        self.end_time = None
 
     def on_moved(self, event):
         if event.is_directory:
@@ -331,7 +145,18 @@ class ShakeEventHandler(FileSystemEventHandler):
             print("directory created:{0}".format(event.src_path))
         else:
             print("file created:{0}".format(event.src_path))
+            logging.info("file created:" + event.src_path)
+            file_path = event.src_path.split("\\")[-1]
+            shake_date = file_path[2:12]
+            shake_time = file_path[13:21].replace("-", ":")
             self.shake_file = open(event.src_path, "r")
+            self.record_shake = record_shake_time(record_date=shake_date, record_time=shake_time,
+                                                  start_time=shake_time, end_time="")
+            self.record_shake.save()
+            self.x_data = ""
+            self.x_detail_data = {}
+            self.y_data = ""
+            self.y_detail_data = {}
 
     def on_deleted(self, event):
         if event.is_directory:
@@ -339,12 +164,34 @@ class ShakeEventHandler(FileSystemEventHandler):
         else:
             print("file deleted:{0}".format(event.src_path))
 
+    def save_to_mysql(self):
+        print(self.x_detail_data)
+        print(self.y_detail_data)
+        x = ""
+        y = ""
+        for key, value in self.x_detail_data.items():
+            x += key + ":" + value + "\n"
+        for key, value in self.y_detail_data.items():
+            y += key + ":" + value + "\n"
+        self.record_shake.shake_x_data = self.x_data[:-1]
+        self.record_shake.shake_y_data = self.y_data[:-1]
+        self.record_shake.shake_x_detail_data = x
+        self.record_shake.shake_y_detail_data = y
+        self.record_shake.end_time = self.end_time
+        self.record_shake.save()
+        self.shake_file = None
+        self.record_shake = None
+        self.x_data = None
+        self.x_detail_data = None
+        self.y_data = None
+        self.y_detail_data = None
+        self.end_time = None
+
     def on_modified(self, event):
         if event.is_directory:
             print("directory modified:{0}".format(event.src_path))
         else:
             # print("file modified:{0}".format(event.src_path))
-            file_path = event.src_path
             if self.shake_file is None:
                 self.shake_file = open(event.src_path, "r")
             else:
@@ -353,17 +200,37 @@ class ShakeEventHandler(FileSystemEventHandler):
                     if not line:
                         break
                     line = line.strip()
+                    if "END" in line:
+                        self.save_to_mysql()
+                        break
                     print(line)
+                    logging.info(line)
+                    i = find_n_sub_str(line, "-", 2, 0)
+                    line2 = line[i + 1:]
+                    d2 = line2
+                    d3 = d2.split(":")
+                    h_time = get_normal_str(d3[0]) + ":" + get_normal_str(d3[1]) + ":" + get_normal_str(d3[2])
+                    # print(h_time)
+                    self.end_time = h_time
+                    d4 = d3[3]
+                    d5 = d4.split("\t")
+                    self.x_data += d5[-2] + ","
+                    if self.x_detail_data.get(h_time) is None:
+                        self.x_detail_data[h_time] = ""
+                    self.x_detail_data[h_time] += d5[-2] + ","
+                    self.y_data += d5[-1] + ","
+                    if self.y_detail_data.get(h_time) is None:
+                        self.y_detail_data[h_time] = ""
+                    self.y_detail_data[h_time] += d5[-1] + ","
+                    # print(d5[-2])
+                    # print(d5[-1])
 
 
 if __name__ == "__main__":
     observer = Observer()
     heart_event_handler = HeartEventHandler()
     shake_event_handler = ShakeEventHandler()
-    # shake_x_event_handler = ShakeXEventHandler()
-    # shake_y_event_handler = ShakeYEventHandler()
-    observer.schedule(heart_event_handler, "D:/code/shoot/simulation_data/heart", True)
-    observer.schedule(shake_event_handler, "D:/code/shoot/simulation_data/shake/x", True)
-    # observer.schedule(shake_y_event_handler, "D:/code/shoot/simulation_data/shake/y", True)
+    observer.schedule(heart_event_handler, "D:/code/shoot/simulation_data/Heart", True)
+    observer.schedule(shake_event_handler, "D:/code/shoot/simulation_data/Hand", True)
     observer.start()
     observer.join()
