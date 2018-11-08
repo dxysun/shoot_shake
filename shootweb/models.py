@@ -3,6 +3,25 @@ from django.db import models
 
 # Create your models here.
 # 记录每次抖动开始和结束的时间
+class user_info(models.Model):
+    user_name = models.CharField(max_length=100, default="")
+    password = models.CharField(max_length=100, default="")
+    gender = models.CharField(max_length=10, null=True)   # 男/女
+    age = models.IntegerField(null=True)
+    role = models.CharField(max_length=100)   # admin, athlete, coach
+    intro = models.TextField(null=True)
+    item_id = models.IntegerField(null=True)
+    remark = models.TextField(null=True)
+
+
+class shoot_items(models.Model):
+    item_name = models.CharField(max_length=100, default="")
+    item_info = models.TextField(null=True)
+    item_rule = models.TextField(null=True)
+    remark = models.TextField(null=True)
+
+
+# 记录每次抖动开始和结束的时间
 class record_shake_time(models.Model):
     record_date = models.CharField(max_length=200)
     record_time = models.CharField(max_length=200, default="")
@@ -13,6 +32,7 @@ class record_shake_time(models.Model):
     shake_y_data = models.TextField(null=True)
     shake_y_detail_data = models.TextField(null=True)
     is_process = models.IntegerField(default=0)
+    user_name = models.CharField(max_length=100, default="")
     remark = models.TextField(null=True)
 
 
@@ -24,6 +44,7 @@ class shake_data(models.Model):
     shake_time = models.CharField(max_length=200, default="")
     x_data = models.TextField(null=True)
     y_data = models.TextField(null=True)
+    user_name = models.CharField(max_length=100, default="")
     remark = models.TextField(null=True)
 
 
@@ -34,6 +55,7 @@ class record_heart_time(models.Model):
     start_time = models.CharField(max_length=200, default='')
     end_time = models.CharField(max_length=200, default='')
     is_process = models.IntegerField(default=0)
+    user_name = models.CharField(max_length=100, default="")
     remark = models.TextField(null=True)
 
 
@@ -45,6 +67,7 @@ class heart_data(models.Model):
     heart_date = models.CharField(max_length=200)
     heart_rate = models.CharField(max_length=200)
     average_rate = models.IntegerField(default=0)
+    user_name = models.CharField(max_length=100, default="")
     remark = models.TextField(null=True)
 
 
@@ -61,6 +84,7 @@ class shoot_grade(models.Model):
     x_shake = models.FloatField(null=True)
     y_shake = models.FloatField(null=True)
     heart_rate = models.IntegerField(null=True)
+    user_name = models.CharField(max_length=100, default="")
     remark = models.TextField(null=True)
 
 
@@ -73,4 +97,5 @@ class shoot_report(models.Model):
     x_shake_data = models.TextField(null=True)
     y_shake_data = models.TextField(null=True)
     is_process = models.IntegerField(default=0)
+    user_name = models.CharField(max_length=100, default="")
     remark = models.TextField(null=True)

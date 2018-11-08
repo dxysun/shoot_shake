@@ -60,10 +60,12 @@ class HeartEventHandler(FileSystemEventHandler):
             logging.info("file created:" + event.src_path)
             self.heart_file = open(event.src_path, "r")
             file_path = event.src_path.split("\\")[-1]
-            heart_date = file_path[2:12]
-            heart_time = file_path[13:21].replace("-", ":")
-            self.record_heart = record_heart_time(record_date=heart_date, record_time=heart_time, start_time=heart_time,
-                                                  end_time="")
+            i = file_path.find("-")
+            user_name = file_path[:i]
+            heart_date = file_path[i + 1:i + 11]
+            heart_time = file_path[i + 12:i + 20].replace("-", ":")
+            self.record_heart = record_heart_time(record_date=heart_date, record_time=heart_time,
+                                                  start_time=heart_time, end_time="", user_name=user_name)
             self.record_heart.save()
             self.heart_data = {}
 
@@ -83,7 +85,8 @@ class HeartEventHandler(FileSystemEventHandler):
                 rates += rate + " "
                 total += int(rate)
             data = heart_data(record_id=self.record_heart.id, heart_time=key, heart_date=self.record_heart.record_date,
-                              heart_rate=rates, average_rate=int(total / len(value)))
+                              heart_rate=rates, average_rate=int(total / len(value)),
+                              user_name=self.record_heart.user_name)
             data.save()
             end_time = key
         self.record_heart.end_time = end_time
@@ -99,6 +102,15 @@ class HeartEventHandler(FileSystemEventHandler):
             file_path = event.src_path
             if self.heart_file is None:
                 self.heart_file = open(event.src_path, "r")
+                file_path = file_path.split("\\")[-1]
+                i = file_path.find("-")
+                user_name = file_path[:i]
+                heart_date = file_path[i + 1:i + 11]
+                heart_time = file_path[i + 12:i + 20].replace("-", ":")
+                self.record_heart = record_heart_time(record_date=heart_date, record_time=heart_time,
+                                                      start_time=heart_time, end_time="", user_name=user_name)
+                self.record_heart.save()
+                self.heart_data = {}
             else:
                 while True:
                     line = self.heart_file.readline()
@@ -147,11 +159,15 @@ class ShakeEventHandler(FileSystemEventHandler):
             print("file created:{0}".format(event.src_path))
             logging.info("file created:" + event.src_path)
             file_path = event.src_path.split("\\")[-1]
-            shake_date = file_path[2:12]
-            shake_time = file_path[13:21].replace("-", ":")
+            # shake_date = file_path[2:12]
+            # shake_time = file_path[13:21].replace("-", ":")
+            i = file_path.find("-")
+            user_name = file_path[:i]
+            shake_date = file_path[i + 1:i + 11]
+            shake_time = file_path[i + 12:i + 20].replace("-", ":")
             self.shake_file = open(event.src_path, "r")
             self.record_shake = record_shake_time(record_date=shake_date, record_time=shake_time,
-                                                  start_time=shake_time, end_time="")
+                                                  start_time=shake_time, end_time="", user_name=user_name)
             self.record_shake.save()
             self.x_data = ""
             self.x_detail_data = {}
@@ -193,7 +209,19 @@ class ShakeEventHandler(FileSystemEventHandler):
         else:
             # print("file modified:{0}".format(event.src_path))
             if self.shake_file is None:
+                file_path = event.src_path.split("\\")[-1]
+                i = file_path.find("-")
+                user_name = file_path[:i]
+                shake_date = file_path[i + 1:i + 11]
+                shake_time = file_path[i + 12:i + 20].replace("-", ":")
                 self.shake_file = open(event.src_path, "r")
+                self.record_shake = record_shake_time(record_date=shake_date, record_time=shake_time,
+                                                      start_time=shake_time, end_time="", user_name=user_name)
+                self.record_shake.save()
+                self.x_data = ""
+                self.x_detail_data = {}
+                self.y_data = ""
+                self.y_detail_data = {}
             else:
                 while True:
                     line = self.shake_file.readline()
