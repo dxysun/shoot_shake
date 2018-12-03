@@ -6,9 +6,11 @@ import datetime
 import django
 import logging
 
-sys.path.append('D:/workSpace/PythonWorkspace/shoot_shake/shoot_shake')
-sys.path.append('D:/workSpace/PythonWorkspace/shoot_shake')
-os.chdir('D:/workSpace/PythonWorkspace/shoot_shake')
+dirname, filename = os.path.split(os.path.abspath(__file__))
+
+sys.path.append(dirname + '/shoot_shake')
+sys.path.append(dirname)
+os.chdir(dirname)
 logging.basicConfig(filename='log.txt', filemode="w", level=logging.INFO)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "shoot_shake.settings")
 django.setup()
@@ -64,8 +66,8 @@ class HeartEventHandler(FileSystemEventHandler):
             user_name = file_path[:i]
             heart_date = file_path[i + 1:i + 11]
             heart_time = file_path[i + 12:i + 20].replace("-", ":")
-            record_time = string_to_time(heart_time)
-            heart_time = time_to_string(record_time - datetime.timedelta(minutes=1, seconds=27))
+            # record_time = string_to_time(heart_time)
+            # heart_time = time_to_string(record_time - datetime.timedelta(minutes=1, seconds=27))
             self.record_heart = record_heart_time(record_date=heart_date, record_time=heart_time,
                                                   start_time=heart_time, end_time="", user_name=user_name)
             self.record_heart.save()
@@ -86,8 +88,9 @@ class HeartEventHandler(FileSystemEventHandler):
             for rate in value:
                 rates += rate + " "
                 total += int(rate)
-            record_time = string_to_time(key)
-            heart_time = time_to_string(record_time - datetime.timedelta(minutes=1, seconds=27))
+            heart_time = key
+            # record_time = string_to_time(key)
+            # heart_time = time_to_string(record_time - datetime.timedelta(minutes=1, seconds=27))
             data = heart_data(record_id=self.record_heart.id, heart_time=heart_time, heart_date=self.record_heart.record_date,
                               heart_rate=rates, average_rate=int(total / len(value)),
                               user_name=self.record_heart.user_name)
@@ -107,16 +110,6 @@ class HeartEventHandler(FileSystemEventHandler):
             # print("file modified:{0}".format(event.src_path))
             file_path = event.src_path
             if self.heart_file is None:
-                # self.heart_file = open(event.src_path, "r")
-                # file_path = file_path.split("\\")[-1]
-                # i = file_path.find("-")
-                # user_name = file_path[:i]
-                # heart_date = file_path[i + 1:i + 11]
-                # heart_time = file_path[i + 12:i + 20].replace("-", ":")
-                # self.record_heart = record_heart_time(record_date=heart_date, record_time=heart_time,
-                #                                       start_time=heart_time, end_time="", user_name=user_name)
-                # self.record_heart.save()
-                # self.heart_data = {}
                 pass
             else:
                 while True:
@@ -173,8 +166,8 @@ class ShakeEventHandler(FileSystemEventHandler):
             shake_date = file_path[i + 1:i + 11]
             shake_time = file_path[i + 12:i + 20].replace("-", ":")
             self.shake_file = open(event.src_path, "r")
-            record_time = string_to_time(shake_time)
-            shake_time = time_to_string(record_time - datetime.timedelta(minutes=1, seconds=27))
+            # record_time = string_to_time(shake_time)
+            # shake_time = time_to_string(record_time - datetime.timedelta(minutes=1, seconds=27))
             self.record_shake = record_shake_time(record_date=shake_date, record_time=shake_time,
                                                   start_time=shake_time, end_time="", user_name=user_name)
             self.record_shake.save()
@@ -219,19 +212,6 @@ class ShakeEventHandler(FileSystemEventHandler):
         else:
             # print("file modified:{0}".format(event.src_path))
             if self.shake_file is None:
-                # file_path = event.src_path.split("\\")[-1]
-                # i = file_path.find("-")
-                # user_name = file_path[:i]
-                # shake_date = file_path[i + 1:i + 11]
-                # shake_time = file_path[i + 12:i + 20].replace("-", ":")
-                # self.shake_file = open(event.src_path, "r")
-                # self.record_shake = record_shake_time(record_date=shake_date, record_time=shake_time,
-                #                                       start_time=shake_time, end_time="", user_name=user_name)
-                # self.record_shake.save()
-                # self.x_data = ""
-                # self.x_detail_data = {}
-                # self.y_data = ""
-                # self.y_detail_data = {}
                 pass
             else:
                 while True:
@@ -249,8 +229,8 @@ class ShakeEventHandler(FileSystemEventHandler):
                     d2 = line2
                     d3 = d2.split(":")
                     h_time = get_normal_str(d3[0]) + ":" + get_normal_str(d3[1]) + ":" + get_normal_str(d3[2])
-                    record_time = string_to_time(h_time)
-                    h_time = time_to_string(record_time - datetime.timedelta(minutes=1, seconds=27))
+                    # record_time = string_to_time(h_time)
+                    # h_time = time_to_string(record_time - datetime.timedelta(minutes=1, seconds=27))
                     # print(h_time)
                     self.end_time = h_time
                     d4 = d3[3]
