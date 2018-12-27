@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'test_shoot',
         'USER': 'root',
         'PASSWORD': 'toor',
-        'HOST': 'localhost',
+        'HOST': 'dxysun.com',
         'PORT': '3306',
         'CHARSET': 'utf8'
     }

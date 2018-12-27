@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="44fcb1bc-a71f-4413-9c8d-c059a702f5f8" name="Default" comment="去掉对时间的修改">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+    <list default="true" id="44fcb1bc-a71f-4413-9c8d-c059a702f5f8" name="Default" comment="模型修改">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shoot_shake/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/shoot_shake/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shootweb/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/shootweb/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/watch_shake_heart_file.py" beforeDir="false" afterPath="$PROJECT_DIR$/watch_shake_heart_file.py" afterDir="false" />
     </list>
@@ -24,11 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/watch_shake_heart_file.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="79" column="28" selection-start-line="79" selection-start-column="28" selection-end-line="79" selection-end-column="28" />
+            <state relative-caret-position="406">
+              <caret line="186" column="111" lean-forward="true" selection-start-line="186" selection-start-column="111" selection-end-line="187" selection-end-column="103" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -36,13 +35,34 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shootweb/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="620">
-              <caret line="226" lean-forward="true" selection-start-line="226" selection-end-line="226" />
+            <state relative-caret-position="423">
+              <caret line="35" column="40" lean-forward="true" selection-start-line="35" selection-start-column="40" selection-end-line="35" selection-end-column="40" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shootweb/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="57">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shoot_shake/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1577">
+              <caret line="84" column="27" selection-start-line="84" selection-start-column="27" selection-end-line="84" selection-end-column="27" />
+              <folding>
+                <element signature="e#315#324#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -53,6 +73,8 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>x_data_detail</find>
+      <find>logging</find>
+      <find>record_up_shake_time</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -62,14 +84,14 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/shootweb/watch_shake_heart_file.py" />
-        <option value="$PROJECT_DIR$/shoot_shake/settings.py" />
         <option value="$PROJECT_DIR$/shootweb/generate_data.py" />
-        <option value="$PROJECT_DIR$/watch_shake_heart_file.py" />
+        <option value="$PROJECT_DIR$/shoot_shake/settings.py" />
         <option value="$PROJECT_DIR$/shootweb/models.py" />
+        <option value="$PROJECT_DIR$/watch_shake_heart_file.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-10" />
     <option name="y" value="-10" />
     <option name="width" value="1940" />
@@ -294,7 +316,17 @@
       <workItem from="1544092315497" duration="1365000" />
       <workItem from="1544107423139" duration="818000" />
       <workItem from="1544146225351" duration="1187000" />
-      <workItem from="1544185792844" duration="599000" />
+      <workItem from="1544185792844" duration="2950000" />
+      <workItem from="1544333111559" duration="1425000" />
+      <workItem from="1544339451282" duration="594000" />
+      <workItem from="1544345076789" duration="636000" />
+      <workItem from="1544358365236" duration="621000" />
+      <workItem from="1544618508651" duration="2434000" />
+      <workItem from="1544627207070" duration="825000" />
+      <workItem from="1544712422614" duration="1481000" />
+      <workItem from="1544884240117" duration="1246000" />
+      <workItem from="1544966491878" duration="112000" />
+      <workItem from="1545046326902" duration="767000" />
     </task>
     <task id="LOCAL-00001" summary="添加批处理文件">
       <created>1541579392586</created>
@@ -324,17 +356,24 @@
       <option name="project" value="LOCAL" />
       <updated>1543848092070</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="模型修改">
+      <created>1544192655179</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1544192655179</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10384000" />
+    <option name="totallyTimeSpent" value="22876000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1552" height="840" extended-state="0" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3172691" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2124665" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -346,7 +385,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.26458037" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.1388102" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="11" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.14387465" />
@@ -365,7 +404,8 @@
     <MESSAGE value="可存储用户名" />
     <MESSAGE value="添加对时间的修改" />
     <MESSAGE value="去掉对时间的修改" />
-    <option name="LAST_COMMIT_MESSAGE" value="去掉对时间的修改" />
+    <MESSAGE value="模型修改" />
+    <option name="LAST_COMMIT_MESSAGE" value="模型修改" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://D:/Program/Anaconda2/envs/python36/Lib/logging/__init__.py">
@@ -377,16 +417,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/log.txt">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shoot_shake/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1311">
-          <caret line="96" column="6" lean-forward="true" selection-start-line="96" selection-start-column="6" selection-end-line="96" selection-end-column="6" />
-          <folding>
-            <element signature="e#315#324#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/shoot_shake/urls.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -408,22 +438,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/watch_shake_heart_file.py">
+    <entry file="file://$PROJECT_DIR$/shootweb/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="79" column="28" selection-start-line="79" selection-start-column="28" selection-end-line="79" selection-end-column="28" />
+        <state relative-caret-position="57">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shoot_shake/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1577">
+          <caret line="84" column="27" selection-start-line="84" selection-start-column="27" selection-end-line="84" selection-end-column="27" />
           <folding>
-            <element signature="e#0#39#0" expanded="true" />
+            <element signature="e#315#324#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/shootweb/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="620">
-          <caret line="226" lean-forward="true" selection-start-line="226" selection-end-line="226" />
+        <state relative-caret-position="423">
+          <caret line="35" column="40" lean-forward="true" selection-start-line="35" selection-start-column="40" selection-end-line="35" selection-end-column="40" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/watch_shake_heart_file.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="186" column="111" lean-forward="true" selection-start-line="186" selection-start-column="111" selection-end-line="187" selection-end-column="103" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
           </folding>
         </state>
       </provider>
